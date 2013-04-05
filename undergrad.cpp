@@ -1,0 +1,248 @@
+-/**********************************************************************
+-Andrew Holman
+-This is my own work.
+-I have abided by the UNCG Academic Integrity Policy.
+-***********************************************************************
+-
+-***********************************************************************
+-CSC 330, Project 1
+-The following program will implement a student class as the base
+-class and two derived classes: undergrad and grad.
+-**********************************************************************/
+-
+-#include <iostream>
+-#include <iomanip>
+-#include <algorithm>
+-#include <list>
+-#include <vector>
+-
+-using namespace std;
+-
+-class Student
+-{
+-protected:
+-  //variables
+-	char *studentName;
+-	char *ssn;
+-	float gpa;
+-	int credits;
+-	char *year;
+-public:
+-	//constructors
+-	Student(char *name, char *SSN, const float& GPA, const int& cRedits, char *YEAR)
+-	{
+-		studentName = new char [strlen(name) + 1];
+-		ssn = new char [strlen(SSN) + 1];
+-		year = new char [strlen(YEAR) + 1];
+-
+-		strcpy(studentName, name);
+-		strcpy(ssn, SSN);
+-		strcpy(year, YEAR);
+-		gpa = GPA;
+-		credits = cRedits;
+-	}
+-
+-	//print and tuition function
+-	virtual void print() const
+-	{
+-		cout << setw(21) << getStudentName();
+-		cout << setw(12) << getSsn();
+-		cout << setw(12) << getYear();
+-		cout << setw(12) << getCredits();
+-		cout << setw(8) << getGPA();
+-		cout << endl;
+-	}
+-
+-	virtual float tuition() const 
+-	{ 
+-		return 0.0;
+-	}
+-
+-	//get functions
+-	const char *getStudentName() const
+-	{
+-		return studentName;
+-	}
+-	const char *getSsn() const
+-	{
+-		return ssn;
+-	}
+-	float getGPA() const
+-	{
+-		return gpa;
+-	}
+-	int getCredits() const
+-	{
+-		return credits;
+-	}
+-	const char *getYear() const
+-	{
+-		return year;
+-	}
+-
+-	//overloaded operators
+-	friend ostream &operator << (ostream& out, const Student& s)
+-	{
+-		s.print();
+-		return out;
+-	}
+-	//overloaded as an option for comparison
+-	bool operator < (const Student& rhs)
+-	{
+-		return (gpa < rhs.getGPA());
+-	}
+-};
+-
+-
+-//Undergrad class, using Student as base.
+-class Undergrad: public Student
+-{
+-protected:
+-	float undergrad_rate;
+-public:
+-	Undergrad(char *name, char *SSN, const float& GPA, const int& cRedits, char *YEAR, const float& RATE):
+-	  Student(name, SSN, GPA, cRedits, YEAR), undergrad_rate(RATE) {}
+-
+-	float getRate() const
+-	{
+-		return undergrad_rate;
+-	}
+-
+-	void setRate(float ra)
+-	{
+-		undergrad_rate = ra;
+-	}
+-
+-	void print() const
+-	{
+-		Student::print();
+-		cout << setw(35) << "Tuition Cost: " << tuition() << endl;
+-	}
+-	float tuition() const
+-	{
+-		return (undergrad_rate * Student::getCredits());
+-	}
+-};
+-
+-//Grad class, using Student as base
+-class Grad: public Student
+-{
+-protected:
+-	float grad_rate;
+-	char *thesis;
+-public:
+-	Grad(char *name, char *SSN, const float& GPA, const int& cRedits, char *YEAR, const float& RATE, char *Thesis):
+-	  Student(name, SSN, GPA, cRedits, YEAR), grad_rate(RATE){
+-		  thesis = new char [strlen(Thesis) + 1];
+-		  strcpy(thesis, Thesis);
+-	  }
+-
+-	const char *getThesis() const
+-	{
+-		return thesis;
+-	}
+-	float getRate()
+-	{
+-		return grad_rate;
+-	}
+-
+-	void setThesis(char* Thesis)
+-	{
+-		thesis = new char [strlen(Thesis) + 1];
+-		strcpy(thesis, Thesis);
+-	}
+-	void setRate(float RATE)
+-	{
+-		grad_rate = RATE;
+-	}
+-
+-	void print() const
+-	{
+-		Student::print();
+-		cout << setw(35) << "Tuition Cost: " << tuition() << endl;
+-		cout << setw(29) << "Thesis: " << getThesis() << endl;
+-	}
+-	float tuition() const
+-	{
+-		return (grad_rate * Student::getCredits());
+-	} 
+-};
+-
+-//used to sort the vector
+-bool GPAsort (const Student* lhs, const Student* rhs)
+-	{
+-		return (lhs->getGPA() < rhs->getGPA());
+-	}
+-
+-int main()
+-{
+-	//pointer used to statically access the instantiations of the class
+-	Student *sptr;
+-	Undergrad a("Mary", "000111222", 4.0, 12, "Junior", 400.0);
+-	Grad b("David", "111222333", 3.7, 9, "Graduate", 500.0, "How to learn data structures using C++/STL?");
+-	Grad c("Jason", "222333444", 3.9, 9, "Graduate", 500.0, "Design of efficient algorithms");
+-
+-	sptr = &a; sptr -> print();
+-	sptr = &b; sptr -> print();
+-	sptr = &c; sptr -> print();
+-
+-	//used for readability between outputs
+-	cout << endl << endl << endl << endl;
+-
+-	//build a list of the base class
+-	list<Student> L;
+-
+-	L.push_back(a);
+-	L.push_back(b);
+-	L.push_back(c);
+-
+-	//list iterator
+-	list<Student>::iterator i;
+-
+-	//delete the last element and push it on the front
+-	L.pop_back();
+-	L.push_front(c);
+-
+-	//header line
+-	cout << setw(21) << "Name";
+-	cout << setw(12) << "SSN";
+-	cout << setw(12) << "Year";
+-	cout << setw(12) << "Credits";
+-	cout << setw(8) << "GPA\n";
+-
+-	//output the contents of the list using the iterator
+-	for(i = L.begin(); i != L.end(); i++) 
+-	{
+-		cout << *i;
+-		cout << endl;
+-	}
+-
+-	//used for readability between outputs
+-	cout << endl << endl << endl << endl;
+-
+-
+-	//build a vector of the students created, using pointers
+-	vector<Student*> V;
+-
+-	//push the objects into the vector
+-	V.push_back(&a);
+-	V.push_back(&b);
+-	V.push_back(&c);
+-
+-	//vector iterator
+-	vector<Student*>::iterator vIt;
+-
+-	//sort the vector from begin to end, using the GPA sort function and the built-in sort algorithm
+-	sort(V.begin(), V.end(), GPAsort);
+-
+-	//output the students sorted upon GPA
+-	for(vIt = V.begin(); vIt != V.end(); vIt++)
+-	{
+-		cout << *(*vIt) << endl;
+-	}
+-	
+-	return 0;
+-
+-}
+-
+-	
