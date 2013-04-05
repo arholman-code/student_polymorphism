@@ -1,0 +1,32 @@
+-/**********************************************************************
+-Andrew Holman
+-This is my own work.
+-***********************************************************************
+-
+-***********************************************************************
+-CSC 330, Project 1
+-The following program will implement an undergrad class that will use 
+-the student class as a base for this derived class.
+-**********************************************************************/
+-
+-#ifndef UNDERGRAD_H
+-#define UNDERGRAD_H
+-
+-#include <iostream>
+-using namespace std;
+-
+-class undergrad : public student
+-{
+-public:
+-  undergrad();
+-	char* get_year();
+-	float get_rate();
+-	void set_year(char*);
+-private:
+-	float under_rate = 380.0;
+-	char* year;
+-}
+-
+-undergrad::undergrad
+-
+-#endif
