@@ -1,0 +1,73 @@
+-/**********************************************************************
+-Andrew Holman
+-This is my own work.
+-***********************************************************************
+-
+-***********************************************************************
+-CSC 330, Project 1
+-The following program will implement a student class that will act as
+-a base class for three others.
+-**********************************************************************/
+-
+-#ifndef STUDENT_H
+-#define STUDENT_H
+-
+-#include <iostream>
+-using namespace std;
+-
+-class student
+-{
+-private:
+-protected:
+-  //variables
+-	char studentName[20];
+-	char ssn[10];
+-	float gpa;
+-	int credits;
+-	char year[10];
+-public:
+-	//constructors
+-	student(char name[20], char SSN[10], float& GPA, int& cRedits, char YEAR[10])
+-	{
+-		studentName = name;
+-		ssn = SSN;
+-		gpa = GPA;
+-		credits = cRedits;
+-		year = YEAR;
+-	}
+-
+-	//print and tuition function
+-	virtual void print() const
+-	{
+-		cout << "Name: " << studentName << endl;
+-		cout << "Social Security Number: " << ssn << endl;
+-		cout << "GPA: " << gpa << endl;
+-		cout << "Credit Hours: " << credits << endl;
+-		cout << "Year: " << year << endl;
+-	}
+-
+-	virtual float tuition() const = 0;
+-
+-	//get functions
+-	char getStudentName() const
+-	{
+-		return studentName;
+-	}
+-	char getSsn() const
+-	{
+-		return ssn;
+-	}
+-	float getGPA() const
+-	{
+-		return gpa;
+-	}
+-	int getCredits() const
+-	{
+-		return credits;
+-	}
+-	char getYear() const
+-	{
+-		return year;
+-	}
+-};
+-#endif
