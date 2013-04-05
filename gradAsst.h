@@ -1,0 +1,22 @@
+-/**********************************************************************
+-Andrew Holman
+-This is my own work.
+-***********************************************************************
+-
+-***********************************************************************
+-CSC 330, Project 1
+-The following program will implement a student class that will use 
+-the student class and the grad class as base classes for this derived 
+-class.
+-**********************************************************************/
+-
+-#ifndef GRADASST_H
+-#define GRADASST_H
+-
+-#include <iostream>
+-using namespace std;
+-
+-class grad_asst
+-{}
+-
+-#endif
